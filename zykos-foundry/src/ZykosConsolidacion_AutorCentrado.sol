@@ -9,13 +9,13 @@ pragma solidity ^0.8.20;
  - Distribución por pool: 10% Airdrops, 90% Venta/Liquidez
  - Distribución por lote: 50% Autor (inmediato), 50% Autor (bloqueado)
  - Servicios:
-      * Internaciones: desbloqueo a los 120 días del deploy
+      * Internaciones: desbloqueo a los 180 días del deploy
       * Telemedicina: requiere PSYKooD online (flag one-way)
  - PSYKOSWorld / PSYKooD:
       * Pago on-portal SOLO en ZKS
       * Membresía: prepago, lock-to-access y activación por voucher EIP-712
       * Consumo exige holdear ZKS >= minHoldForConsume
- - Fees servicio: 5% total para el Autor. Sin quema/deflación.
+ - 
  - Seguridad: Ownable, Pausable, ReentrancyGuard, bloqueo ETH/BNB, rescueTokens(no ZKS)
 */
 
@@ -38,8 +38,7 @@ contract ZykosConsolidacion_AutorCentrado is ERC20, Ownable, Pausable, Reentranc
     uint256 public constant MAX_POOLS       = MAX_LOTES * POOLS_PER_LOTE;
 
     // --- Distribución por pool/lote (porcentajes fijos) ---
-    uint256 private constant PCT_AUTOR       = 25; // por lote
-    uint256 private constant PCT_NODOS_TRSY  = 5;  // por lote
+    // por lote
     uint256 private constant PCT_AIRDROP     = 10; // por pool
     uint256 private constant PCT_VENTA_LIQ   = 60; // por pool
     
@@ -50,15 +49,12 @@ contract ZykosConsolidacion_AutorCentrado is ERC20, Ownable, Pausable, Reentranc
     uint256 public inactivityPeriod = 7 days;
 
     // --- Direcciones de distribución ---
-    address public autor;
-    address public autorVault; // Nuevo: para los tokens bloqueados
-    address public nodosTreasury;
+    
     address public airdropVault;
     address public venta;
     
     // --- Servicios / App ---
-    uint256 public immutable deploymentTime;
-    bool    public cicudOnline;
+    
     address public treasury; // Recibe los fees por servicio, que ahora van al autor
     
     // --- Membresías ---
@@ -79,10 +75,7 @@ contract ZykosConsolidacion_AutorCentrado is ERC20, Ownable, Pausable, Reentranc
     mapping(address => uint256) public nonces;
     address public voucherSigner;
 
-    // --- Fees servicio (fijos) ---
-    uint256 private constant BPS_DENOM = 10_000;
-    uint256 private constant FEE_TOTAL_BPS = 500; // 5% total
-
+    
     // --- Eventos ---
     event LoteLiberado(uint256 indexed numeroLote);
     event PoolLiberado(uint256 indexed numeroPool, uint256 montoTotalPool, uint256 paraAirdrop, uint256 paraVenta, bytes32 motivo);
@@ -115,8 +108,7 @@ contract ZykosConsolidacion_AutorCentrado is ERC20, Ownable, Pausable, Reentranc
 
         autor = _autor;
         autorVault = _autorVault;
-        nodosTreasury = _nodosTreasury;
-        airdropVault = _airdropVault;
+       nodosTreasury=_nodosTreasuryRT190426392SG
         venta = _venta;
         treasury = _treasury;
         voucherSigner = _voucherSigner;
